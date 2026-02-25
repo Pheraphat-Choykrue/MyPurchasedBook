@@ -19,7 +19,7 @@
             this.SetYear();
 
             this.Title.addEventListener("blur", async (e) => {
-                if (e.target.value) {
+                if (e.target.value && document.getElementById('AddBookLabel').innerHTML == 'Add Book') {
                     await $.ajax({
                         type: 'POST',
                         url: `${self.location.href}api/Book/CheckTitleBook`,
