@@ -10,7 +10,7 @@
             this.btnConfirm = document.getElementById('btnConfirm');
             this.addBookClass = document.querySelectorAll('.addBook');
             this.price = document.getElementById("Price")
-
+           
             this.init()
         }
 
@@ -78,11 +78,11 @@
                     });
 
                     if (e.target.value.length == 10) {
-                        let checkISBN10digit = thisClass.CheckISBN10(e.target.value)
+                        let checkISBN10digit = CheckISBN10(e.target.value)
                         if (checkISBN10digit != e.target.value.charAt(e.target.value.length - 1)) thisClass.SetInvalidISBN(e.target)
                     }
                     else {
-                        let checkISBN13digit = thisClass.CheckISBN13(e.target.value)
+                        let checkISBN13digit = CheckISBN13(e.target.value)
                         if (checkISBN13digit != e.target.value.charAt(e.target.value.length - 1)) thisClass.SetInvalidISBN(e.target)
                     }
                 }
@@ -163,7 +163,7 @@
                     "Description": `${book.Description}`,
                     "Image": `${renameImage}`,
                     "ImageType": `${imageType}`,
-                    "Price": `${book.Price}`
+                    "Price": `${isNaN(book.Price) ? 0 : book.Price}`
                 }),
                 error: function (e) {
                     console.log(e);
@@ -173,27 +173,6 @@
             });
             
             $('#AddModal').modal('toggle');
-        }
-
-        CheckISBN10(digits) {
-            let i, s = 0, t = 10;
-
-            for (i = 0; i < 9; i++) {
-                s += digits[i] * t;
-                t = t - 1;
-            }
-            return (11 - (s % 11)) % 11;
-        }
-
-        CheckISBN13(digits) {
-            let i, s = 0, t = 0, odd = 1, even = 3;
-            for (i = 0; i < 12; ++i) {
-                if (i % 2 == 0) t = digits[i] * odd;
-                else t = digits[i] * even;
-                s += t;
-            }
-
-            return 10 - (s % 10) == 10 ? 0 : 10 - (s % 10);
         }
 
         SetInvalidISBN(input) {

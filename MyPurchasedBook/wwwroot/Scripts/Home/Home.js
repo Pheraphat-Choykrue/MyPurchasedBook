@@ -4,6 +4,9 @@
             this.addBookClass = document.querySelectorAll('.addBook');
             this.addModal = document.getElementById('AddModal');
             this.Image = document.getElementById("Image")
+            this.txtSearch = document.getElementById("txtSearch")
+            this.upcScan = document.querySelector(".bi.bi-upc-scan")
+            this.Bookarr = []; 
             this.init()
         }
 
@@ -23,6 +26,23 @@
                 thisClass.GetBooks()
                 thisClass.DropdownSelect2();
             })
+
+            this.txtSearch.addEventListener("input", (e) => {
+                let BookFilter = thisClass.Bookarr.filter((book) => book.Title.indexOf(e.target.value) > -1 || book.ISBN.indexOf(e.target.value) > -1)
+                document.getElementById('custom-cards').replaceChildren();
+               
+                if (BookFilter.length == 0) {
+                    thisClass.CreateDiv(e.target.value)
+                    document.getElementById('ft_card').classList.add('d-none')
+                }
+                else thisClass.createCard(BookFilter)
+            });
+
+            this.upcScan.addEventListener('click', () => {
+                thisClass.ScanBarcode()
+            })
+
+            thisClass.CheckCamera()
         }
 
         async GetBooks() {
@@ -32,10 +52,11 @@
                 url: `${self.location.href}api/Book/GetBook`,
                 type: "GET",
                 success: function (data) {
+                    thisClass.Bookarr = data
                     if (data.length > 0) {
                         document.getElementById('custom-cards').replaceChildren();
                         const perRow = 3
-
+                        
                         const result = data.reduce((resultArray, item, index) => {
                             const chunkIndex = Math.floor(index / perRow)
 
@@ -170,7 +191,7 @@
                 img.onclick = () => {
                     let htmlbody = `<div class="row">
                                         <div class="col-12 col-md-6">
-                                            <img id="video" class="w-100" style="border: 1px solid gray" src="data:${value.ImageType};base64, ${value.Image}"/>
+                                            <img id="video" class="w-100" style="border: 1px solid gray" src="${img.src}"/>
                                         </div>
                                         <div class="col-12 col-md-6">
                                             <div><label class="col-form-label"><span class="font-bold">${value.Title}</span></label></div>
@@ -262,8 +283,6 @@
 
                             document.getElementById('Price').value = `${parseFloat(value.Price).toFixed(2)}`
 
-
-
                             !Swal.isLoading()
                             $('.swal2-close').trigger('click')
                         } else if (result.isDenied) {
@@ -305,6 +324,93 @@
                 divCol.appendChild(divCard);
                 div.appendChild(divCol);
             })
+            document.getElementById('custom-cards').appendChild(div);
+        }
+
+        CheckCamera() {
+            const codeReader = new ZXing.BrowserMultiFormatReader()
+            codeReader.listVideoInputDevices().then((videoInputDevices) => {
+                if (videoInputDevices.length >= 1) document.querySelector(".searchbar-right").classList.remove('d-none')
+                else document.querySelector(".searchbar-right").classList.add('d-none')
+            })
+        }
+
+        ScanBarcode() {
+            const thisClass = this
+            let selectedDeviceId;
+            const codeReader = new ZXing.BrowserMultiFormatReader()
+            codeReader.listVideoInputDevices().then((videoInputDevices) => {
+                Swal.fire({
+                    customClass: 'swal-height',
+                    width: 600,
+                    padding: 10,
+                    html: `<video id="video" class="w-100" style="border: 1px solid gray"></video>`,
+                    showLoaderOnConfirm: true,
+                    showCloseButton: false,
+                    showCancelButton: true,
+                    focusConfirm: false,
+                    showConfirmButton: false,
+                    cancelButtonText: `Cancel`,
+                }).then((result) => {
+                    if (result.isDismissed) {
+                        codeReader.stopStreams()
+                    }
+                });
+
+                selectedDeviceId = videoInputDevices[0].deviceId
+                codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
+                    if (result) {
+                        codeReader.stopStreams()
+                        document.getElementById('video').classList.add('d-none')
+                        $('.swal2-close').trigger('click')
+
+                        thisClass.txtSearch.value = result.text
+                        thisClass.txtSearch.dispatchEvent(new Event('input', { bubbles: true }));
+                    }
+                    if (err && !(err instanceof ZXing.NotFoundException)) {
+                        console.error(err)
+                    }
+                })
+            })
+        }
+
+        CreateDiv(text) {
+            const thisClass = this 
+            const div = document.createElement("div");
+            div.className = "row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-3";
+
+            const divCol = document.createElement("div");
+            divCol.className = "col w-100 d-flex justify-content-center";
+
+            const span = document.createElement("span");
+            span.className = "pe-2";
+
+            const Content = isNaN(CheckISBN10(text)) && isNaN(CheckISBN13(text)) ? document.createTextNode(`No matching records found`) : document.createTextNode(`${text}`);
+            span.appendChild(Content);
+
+            divCol.appendChild(span);
+
+            if (!isNaN(CheckISBN10(text)) && !isNaN(CheckISBN13(text))) {
+                const a = document.createElement("a");
+                a.className = 'aCreateName';
+                a.onclick = () => {
+                    thisClass.txtSearch.value = '';
+                    document.getElementById('custom-cards').replaceChildren();
+                    
+                    $('#AddModal').modal('toggle');
+                    document.getElementById('AddBookLabel').innerHTML = 'Add Book'
+                    document.getElementById('ISBN').value = `${text}`
+
+                }
+
+                const CreateNew = document.createTextNode(`Add book`);
+                a.appendChild(CreateNew);
+
+                divCol.appendChild(a);
+            }
+
+            div.appendChild(divCol);
+
             document.getElementById('custom-cards').appendChild(div);
         }
     }
