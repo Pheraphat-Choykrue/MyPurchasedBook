@@ -15,7 +15,7 @@ namespace MyPurchasedBook.Class
 
             var txtFile = Utils.ReadFile();
             var value = txtFile.Result.Split(";");
-            SqlConnection conn = new SqlConnection($"Data Source={value[0].Split("=")[1]};Initial Catalog={value[1].Split("=")[1]};Integrated Security=True;TrustServerCertificate=True;");
+            SqlConnection conn = new SqlConnection($"Server={value[0].Split("=")[1]};Database={value[1].Split("=")[1]};User Id={value[2].Split("=")[1]};Password={value[3].Split("=")[1]};TrustServerCertificate=True;");
             SqlDataReader rdr = null;
             try
             {
@@ -82,7 +82,7 @@ namespace MyPurchasedBook.Class
         {
             var txtFile = Utils.ReadFile();
             var value = txtFile.Result.Split(";");
-            SqlConnection conn = new SqlConnection($"Data Source={value[0].Split("=")[1]};Initial Catalog={value[1].Split("=")[1]};Integrated Security=True;TrustServerCertificate=True;");
+            SqlConnection conn = new SqlConnection($"Server={value[0].Split("=")[1]};Database={value[1].Split("=")[1]};User Id={value[2].Split("=")[1]};Password={value[3].Split("=")[1]};TrustServerCertificate=True;");
             SqlDataReader rdr = null;
             try
             {
@@ -133,7 +133,7 @@ namespace MyPurchasedBook.Class
 
             var txtFile = Utils.ReadFile();
             var value = txtFile.Result.Split(";");
-            SqlConnection conn = new SqlConnection($"Data Source={value[0].Split("=")[1]};Initial Catalog={value[1].Split("=")[1]};Integrated Security=True;TrustServerCertificate=True;");
+            SqlConnection conn = new SqlConnection($"Server={value[0].Split("=")[1]};Database={value[1].Split("=")[1]};User Id={value[2].Split("=")[1]};Password={value[3].Split("=")[1]};TrustServerCertificate=True;");
             SqlDataReader rdr = null;
             try
             {
@@ -182,7 +182,7 @@ namespace MyPurchasedBook.Class
         {
             var txtFile = Utils.ReadFile();
             var value = txtFile.Result.Split(";");
-            SqlConnection conn = new SqlConnection($"Data Source={value[0].Split("=")[1]};Initial Catalog={value[1].Split("=")[1]};Integrated Security=True;TrustServerCertificate=True;");
+            SqlConnection conn = new SqlConnection($"Server={value[0].Split("=")[1]};Database={value[1].Split("=")[1]};User Id={value[2].Split("=")[1]};Password={value[3].Split("=")[1]};TrustServerCertificate=True;");
             SqlDataReader rdr = null;
             try
             {
@@ -234,7 +234,7 @@ namespace MyPurchasedBook.Class
 
             var txtFile = Utils.ReadFile();
             var value = txtFile.Result.Split(";");
-            SqlConnection conn = new SqlConnection($"Data Source={value[0].Split("=")[1]};Initial Catalog={value[1].Split("=")[1]};Integrated Security=True;TrustServerCertificate=True;");
+            SqlConnection conn = new SqlConnection($"Server={value[0].Split("=")[1]};Database={value[1].Split("=")[1]};User Id={value[2].Split("=")[1]};Password={value[3].Split("=")[1]};TrustServerCertificate=True;");
             SqlDataReader rdr = null;
             try
             {
@@ -296,7 +296,7 @@ namespace MyPurchasedBook.Class
 
             var txtFile = Utils.ReadFile();
             var value = txtFile.Result.Split(";");
-            SqlConnection conn = new SqlConnection($"Data Source={value[0].Split("=")[1]};Initial Catalog={value[1].Split("=")[1]};Integrated Security=True;TrustServerCertificate=True;");
+            SqlConnection conn = new SqlConnection($"Server={value[0].Split("=")[1]};Database={value[1].Split("=")[1]};User Id={value[2].Split("=")[1]};Password={value[3].Split("=")[1]};TrustServerCertificate=True;");
             SqlDataReader rdr = null;
             try
             {
@@ -358,7 +358,7 @@ namespace MyPurchasedBook.Class
 
             var txtFile = Utils.ReadFile();
             var value = txtFile.Result.Split(";");
-            SqlConnection conn = new SqlConnection($"Data Source={value[0].Split("=")[1]};Initial Catalog={value[1].Split("=")[1]};Integrated Security=True;TrustServerCertificate=True;");
+            SqlConnection conn = new SqlConnection($"Server={value[0].Split("=")[1]};Database={value[1].Split("=")[1]};User Id={value[2].Split("=")[1]};Password={value[3].Split("=")[1]};TrustServerCertificate=True;Server={value[0].Split("=")[1]};Database={value[1].Split("=")[1]};User Id={value[2].Split("=")[1]};Password={value[3].Split("=")[1]};TrustServerCertificate=True;");
             SqlDataReader rdr = null;
             try
             {

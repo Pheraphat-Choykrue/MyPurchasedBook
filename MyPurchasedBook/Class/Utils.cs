@@ -71,12 +71,12 @@ namespace MyPurchasedBook.Class
             if (File.Exists(Path.Combine(path, fileName)))
             {
                 // Append new lines of text to the file
-                File.AppendAllText(Path.Combine(path, fileName), $"{time} : {sentence}");
+               Task.Run(async () => File.AppendAllText(Path.Combine(path, fileName), $"{time} : {sentence}"));
             }
             else
             {
                 // Write the text to a new file named "WriteFile.txt".
-                File.WriteAllText(Path.Combine(path, fileName), $"{time} : {sentence}");
+                Task.Run(async () => File.WriteAllText(Path.Combine(path, fileName), $"{time} : {sentence}"));
             }
         }
         #endregion
