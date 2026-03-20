@@ -26,7 +26,6 @@
                 thisClass.GetBooks()
                 thisClass.DropdownSelect2();
             })
-
             this.txtSearch.addEventListener("input", (e) => {
                 let BookFilter = thisClass.Bookarr.filter((book) => book.Title.indexOf(e.target.value) > -1 || book.ISBN.indexOf(e.target.value) > -1)
                 document.getElementById('custom-cards').replaceChildren();
